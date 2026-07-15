@@ -1,0 +1,13 @@
+[project]
+name = "magic-trip-planner-crew"
+version = "0.1.0"
+description = "Three-agent CrewAI crew that plans a family holiday"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "crewai[litellm]>=0.80.0",
+    "crewai-tools>=0.17.0",
+    "pydantic>=2.7",
+    "rich>=13.7",
+    "python-dotenv>=1.0",
+    "fastapi>=0.110",  # litellm's MCP/native-tool-call code path imports this even when unused
+]

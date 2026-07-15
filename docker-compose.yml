@@ -1,0 +1,41 @@
+# Phase 3 deploy shape: api + web only. No caddy service here — this VM
+# already runs a host-level Caddy in front of several other apps
+# (see docs/deploy.md), so we add a site block to its existing Caddyfile
+# instead of standing up a second reverse proxy.
+#
+# Ports are bound to 127.0.0.1 only: nothing but the host's Caddy needs to
+# reach these directly, so they're not exposed to the internet.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: trip-planner-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8600:8000"
+    environment:
+      - WEB_ORIGIN=${WEB_ORIGIN:-https://fam-trip.letsinvent.co.uk}
+    volumes:
+      # Keys stay on the VM's filesystem only, never baked into the image.
+      - ./crew/.env:/app/crew/.env:ro
+      # Daily counter + job history survive container restarts.
+      - ./crew/runs:/app/crew/runs
+    mem_limit: 512m
+    cpus: 1.0
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ""
+    container_name: trip-planner-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3010:3000"
+    depends_on:
+      - api
+    mem_limit: 256m
+    cpus: 0.5

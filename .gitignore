@@ -1,0 +1,21 @@
+# env files — never commit keys
+.env
+*.env
+!.env.example
+
+# crew runtime output
+crew/runs/*
+!crew/runs/.gitkeep
+
+# python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# node (for later phases)
+node_modules/
+.next/
+
+# os
+.DS_Store

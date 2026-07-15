@@ -1,0 +1,15 @@
+[project]
+name = "magic-trip-planner-api"
+version = "0.1.0"
+description = "FastAPI wrapper around the crew/ agents — async job + polling"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.30",
+    # Same crewai/litellm stack as crew/ — this service imports crew/'s
+    # modules directly (see main.py), so it needs the same deps installed.
+    "crewai[litellm]>=0.80.0",
+    "crewai-tools>=0.17.0",
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
